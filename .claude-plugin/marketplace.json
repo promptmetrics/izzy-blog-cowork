@@ -9,7 +9,7 @@
     {
       "name": "izzy-blog-cowork",
       "displayName": "Izzy Blog",
-      "source": ".",
+      "source": "./izzy-blog",
       "description": "Izzy's blog pipeline for Claude Cowork — persona interview, score-gated writing, one-click publish to PromptMetrics, and repurposing."
     }
   ]
