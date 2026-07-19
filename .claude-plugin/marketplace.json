@@ -1,6 +1,6 @@
 {
   "name": "izzy-blog-cowork",
-  "description": "Izzy's blog pipeline for Claude Cowork — persona interview, score-gated writing, one-click publish to PromptMetrics, and repurposing.",
+  "description": "Izzy's blog publishing pipeline for Claude Cowork.",
   "owner": {
     "name": "promptmetrics",
     "url": "https://github.com/promptmetrics/izzy-blog-cowork"
@@ -8,33 +8,9 @@
   "plugins": [
     {
       "name": "izzy-blog-cowork",
+      "displayName": "Izzy Blog",
       "source": ".",
-      "description": "Izzy's blog pipeline for Claude Cowork — persona interview, score-gated writing, one-click publish to PromptMetrics, and repurposing.",
-      "version": "0.1.0",
-      "homepage": "https://github.com/promptmetrics/izzy-blog-cowork",
-      "repository": "https://github.com/promptmetrics/izzy-blog-cowork",
-      "author": {
-        "name": "Izzy Aly",
-        "url": "https://github.com/iiizzzyyy"
-      },
-      "license": "MIT",
-      "keywords": [
-        "blog",
-        "content",
-        "publish",
-        "promptmetrics",
-        "seo",
-        "ai-citations",
-        "cowork",
-        "persona",
-        "repurpose"
-      ],
-      "skills": [
-        "./skills/publish"
-      ],
-      "agents": [
-        "./agents/blog-fixer.md"
-      ]
+      "description": "Izzy's blog pipeline for Claude Cowork — persona interview, score-gated writing, one-click publish to PromptMetrics, and repurposing."
     }
   ]
 }
