@@ -39,4 +39,9 @@ if [ "$need_install" = 1 ]; then
   echo "$ROOT" > "$MARKER"
 fi
 
+# Best-effort persona sync before serving. Non-fatal: any failure warns and
+# continues. Idempotent + TTL-cached, so warm runs are ~ms. stdout suppressed
+# to keep MCP stdio clean; diagnostics go to the append-only sync log.
+"$ROOT/scripts/sync-personas.sh" >/dev/null 2>>"$DATA/.persona-sync.log" || true
+
 exec "$DATA/venv/bin/python3" -m pm_publish_server.server

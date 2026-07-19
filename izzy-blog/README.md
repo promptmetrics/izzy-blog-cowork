@@ -70,6 +70,49 @@ Create a persona with `/publish blog persona` or `/publish blog persona quick`. 
 
 When you run `/publish blog about`, the plugin checks for personas and offers to create one if none exist.
 
+## Persona sync (optional)
+
+The plugin data dir is wiped on a plugin update, which would erase your personas. **Persona sync** auto-populates `${CLAUDE_PLUGIN_DATA}/personas/` from a private git repo you control, so personas survive updates with no manual clone/copy step. It runs at MCP server start and at the start of `/publish blog about` (TTL-cached, so warm runs are ~ms). It is read-only — the plugin never writes back to your repo.
+
+The plugin ships **no repo hardcoded**. You supply the repo, branch, and auth method once.
+
+### One-time setup
+
+1. Create a private git repo containing one `*.json` per persona at the repo root (each file must match the persona schema in the `/publish blog persona` section).
+2. Copy the template into your plugin data dir and edit it:
+
+   ```bash
+   cp "${CLAUDE_PLUGIN_ROOT}/scripts/persona-sync.example.json" \
+      "${CLAUDE_PLUGIN_DATA}/persona-sync.json"
+   ```
+
+   Then set `"repo": "owner/name"` (and optionally `"branch"`).
+
+3. Authenticate so sync can read the private repo. Pick one:
+
+   - **GitHub CLI (recommended):** run `gh auth login`. No secret stored by the plugin — sync reads `gh auth token` at runtime. Default `auth: "auto"` picks this up first.
+   - **Fine-grained PAT (for machines without `gh`):** create a read-only, single-repo PAT and put it in `${CLAUDE_PLUGIN_DATA}/persona-sync.env` (chmod 600):
+
+     ```bash
+     echo 'GH_TOKEN=ghp_xxxxxxxxxxxx' > "${CLAUDE_PLUGIN_DATA}/persona-sync.env"
+     chmod 600 "${CLAUDE_PLUGIN_DATA}/persona-sync.env"
+     ```
+
+   - **SSH deploy key:** ensure `git@github.com:owner/name.git` is reachable via your SSH key. `auth: "auto"` falls back to this last.
+
+   You can force a method with `"auth": "gh"|"pat"|"ssh"|"none"` in `persona-sync.json` (`"none"` is for public repos only).
+
+4. Run any `/publish blog` command. Sync clones into `${CLAUDE_PLUGIN_DATA}/.persona-cache/` and copies valid personas into `personas/`.
+
+### Behavior notes
+
+- **Empty `repo`** (the shipped default) → sync warns once and skips; the pipeline continues with whatever personas exist. Fill in `repo` to enable.
+- **TTL:** sync skips the network within `ttl_seconds` (default 900) of the last run. Force a refresh by deleting `${CLAUDE_PLUGIN_DATA}/.persona-sync-last`.
+- **Malformed file:** a persona missing required keys (`name`, `tone_dimensions`, `readability`, `style`, `do`, `dont`) is skipped with a warning; the prior good copy is kept; other personas still sync.
+- **Offline / unreachable:** sync uses the last good cache and warns; the pipeline runs with whatever personas exist.
+- **`mirror: true`** (default `false`): deletes a locally-synced persona that was removed from the repo, but only files sync previously tracked — a persona you created by hand is never deleted. Note: renaming a persona in the repo will delete the old local file on the next mirror run.
+- **Editing a persona:** edit it in your source repo and commit; within the TTL window (or on the next session) the machine picks up the change.
+
 ## Outputs
 
 - Blog posts: `/Users/izzy/Documents/daily-os/blog/<slug>.md`

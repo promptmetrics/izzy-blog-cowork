@@ -33,6 +33,7 @@ Single-pass content pipeline.
 
 | Step | Action | Tool |
 |------|--------|------|
+| 0 | Persona sync (best-effort) | `${CLAUDE_PLUGIN_ROOT}/scripts/sync-personas.sh` |
 | 1 | Persona check | Read `${CLAUDE_PLUGIN_DATA}/personas/` |
 | 2 | Write post | `/claude-blog:blog-write <topic>` |
 | 3 | Analyze | `/claude-blog:blog-analyze <file> --format json` |
@@ -40,7 +41,9 @@ Single-pass content pipeline.
 | 5a | Publish | MCP tool `pm_publish` |
 | 5b | Repurpose | `/claude-blog:blog-repurpose <file>` |
 
-Steps 1–4 run sequentially. Steps 5a and 5b run in parallel.
+Steps 0–4 run sequentially. Steps 5a and 5b run in parallel.
+
+Sync is best-effort and TTL-cached; failures fall back to whatever personas already exist.
 
 ### Persona handling
 
@@ -62,6 +65,7 @@ To use a specific persona without prompting, pass `with persona <name>` in the c
 
 ### Step-by-step
 
+0. **Sync personas (best-effort).** Run `${CLAUDE_PLUGIN_ROOT}/scripts/sync-personas.sh` before reading personas. Idempotent and TTL-cached, so it's cheap on warm runs. Any failure (no auth, repo unreachable, offline) warns and continues — sync never blocks the pipeline. Configure it once via `${CLAUDE_PLUGIN_DATA}/persona-sync.json` (see README "Persona sync").
 1. **Persona check.** Read `${CLAUDE_PLUGIN_DATA}/personas/*.json`.
 2. **Write.** Invoke `/claude-blog:blog-write` with the topic.
 3. **Analyze.** Run `/claude-blog:blog-analyze --format json`.
@@ -177,3 +181,4 @@ Write to `${CLAUDE_PLUGIN_DATA}/personas/<name>.json`.
 - If `pm_publish` fails, still report repurposed output and the publish error.
 - If `blog-repurpose` fails, still report the published post and the repurposing error.
 - If persona files are malformed, warn and fall back to default voice.
+- If persona sync fails (no auth, repo unreachable, offline), warn once and continue with whatever personas already exist locally. Sync never blocks the pipeline.

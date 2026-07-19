@@ -22,3 +22,13 @@ repurposed/*
 # Persona data (user-generated)
 personas/*
 !personas/.gitkeep
+
+# Persona-sync runtime state (user secrets + cache; never commit these)
+persona-sync.json
+persona-sync.env
+.persona-cache/
+.persona-cache
+.persona-sync-last
+.persona-sync-manifest
+.persona-sync-no-repo-warned
+.persona-sync.log
