@@ -2,8 +2,7 @@
   "name": "izzy-blog-cowork",
   "description": "Izzy's blog publishing pipeline for Claude Cowork.",
   "owner": {
-    "name": "promptmetrics",
-    "url": "https://github.com/promptmetrics/izzy-blog-cowork"
+    "name": "promptmetrics"
   },
   "plugins": [
     {
