@@ -26,7 +26,7 @@ izzy-blog-cowork/
     │   └── blog-fixer.md        # fresh-eyes fixer sub-agent
     ├── servers/
     │   └── pm-publish/          # MCP server for PM admin API
-    ├── bin/
+    ├── scripts/
     │   └── run-pm-publish.sh    # venv + MCP launcher
     ├── repurposed/              # default output folder for repurpose step
     └── personas/                # default persona storage

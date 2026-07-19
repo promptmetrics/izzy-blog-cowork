@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "pm-publish": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/bin/run-pm-publish.sh",
+      "command": "${CLAUDE_PLUGIN_ROOT}/scripts/run-pm-publish.sh",
       "env": {
         "PM_ADMIN_EMAIL": "${PM_ADMIN_EMAIL}",
         "PM_ADMIN_PASSWORD": "${PM_ADMIN_PASSWORD}"
