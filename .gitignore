@@ -1,0 +1,24 @@
+# Plugin data
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Secrets
+.env
+.env.local
+
+# OS
+.DS_Store
+
+# Repurposed output (user-generated)
+repurposed/*
+!repurposed/.gitkeep
+
+# Persona data (user-generated)
+personas/*
+!personas/.gitkeep

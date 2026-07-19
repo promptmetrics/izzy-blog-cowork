@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "izzy-blog-cowork",
+  "version": "0.1.0",
+  "description": "Izzy's blog pipeline for Claude Cowork — persona interview, score-gated writing, one-click publish to PromptMetrics, and repurposing.",
+  "homepage": "https://github.com/promptmetrics/izzy-blog-cowork",
+  "repository": "https://github.com/promptmetrics/izzy-blog-cowork",
+  "author": {
+    "name": "Izzy Aly",
+    "url": "https://github.com/iiizzzyyy"
+  },
+  "license": "MIT",
+  "keywords": [
+    "blog",
+    "content",
+    "publish",
+    "promptmetrics",
+    "seo",
+    "ai-citations",
+    "cowork",
+    "persona",
+    "repurpose"
+  ]
+}
